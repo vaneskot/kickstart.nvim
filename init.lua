@@ -102,10 +102,10 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
--- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
+-- Disable mouse mode
+vim.opt.mouse = ''
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -139,8 +139,8 @@ vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 
 -- Configure how new splits should be opened
-vim.opt.splitright = true
-vim.opt.splitbelow = true
+-- vim.opt.splitright = true
+-- vim.opt.splitbelow = true
 
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
@@ -159,6 +159,33 @@ vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+--
+
+-- Move between tabs easily.
+vim.keymap.set('n', '<C-h>', vim.cmd.tabprevious, { desc = 'Move to the previous tab' })
+vim.keymap.set('n', '<C-l>', vim.cmd.tabnext, { desc = 'Move to the next tab' })
+
+vim.keymap.set('n', 'H', '^', { desc = 'Move to beginning of the line' })
+vim.keymap.set('n', 'L', '$', { desc = 'Move to the end of the line' })
+
+vim.keymap.set('n', '<BS>', 'O<Esc>', { desc = 'Add an empty line before' })
+vim.keymap.set('n', '<CR>', 'o<Esc>', { desc = 'Add an empty line after' })
+
+-- Visual shifting
+vim.keymap.set('v', '<', '<gv', { noremap = true, desc = 'Allow shifting left in visual mode' })
+vim.keymap.set('v', '>', '>gv', { noremap = true, desc = 'Allow shifting right in visual mode' })
+
+-- Allow bash-like movement with CTRL-E and CTRL-A in command and insert modes.
+vim.keymap.set('c', '<C-a>', '<Home>', { desc = 'Move to the beginning of the line in command mode' })
+vim.keymap.set('i', '<C-a>', '<C-o>^', { desc = 'Move to the beginning of the line in insert mode' })
+vim.keymap.set('c', '<C-e>', '<End>', { desc = 'Move to the end of the line in command mode' })
+vim.keymap.set('i', '<C-e>', '<C-o>$', { desc = 'Move to the end of the line in insert mode' })
+
+-- Sort selected lines
+vim.keymap.set('v', '<leader>s', ':sort<CR>', { desc = 'Sort selected lines' })
+
+-- Paste path to current file in command mode
+vim.keymap.set('c', '<C-]>', '<C-r>=expand("%:h")<CR>/', { desc = 'Paste path to current file' })
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
@@ -185,8 +212,6 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
@@ -616,7 +641,7 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -624,7 +649,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
 
         lua_ls = {
@@ -849,6 +874,10 @@ require('lazy').setup({
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
     end,
+  },
+  {
+    -- Another nice colorscheme with styles.
+    'EdenEast/nightfox.nvim',
   },
 
   -- Highlight todo, notes, etc in comments
